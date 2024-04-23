@@ -87,14 +87,14 @@ func main() {
 	fmt.Println("time took: ", time.Since(atime))
 	reqtime := time.Now()
 
-	prompt := fmt.Sprintf("please  write a summary on air quality between %v and %v, here i'll provide current pm2.5 data of cities %v and %v in µg/m³. make sure the summary take account of the other airquality datas and make a comparison of two. ", res.Location.Name, res2.Location.Name, res.Current.Air.Pm, res2.Current.Air.Pm)
+	prompt := fmt.Sprintf("please  write a summary on air quality between %v and %v, here i'll provide current pm2.5 data of cities %v and %v in µg/m³. make sure the summary take account of the other airquality datas and make a comparison of two.", res.Location.Name, res2.Location.Name, res.Current.Air.Pm, res2.Current.Air.Pm)
 	body := models.ChatRequest{
 		Messages: []models.Message{
 			{Role: "system", Content: "You are a helpful coding assistant."},
-			{Role: "user", Content: prompt},
+			{Role: "user", Content: prompt}, // Role is essential for distinguishing between different types of inputs that the model should treat differently
 		},
-		Temperature: 0.7,
-		MaxTokens:   -1,
+		Temperature: 0.7, //closer to 2 more random , closer to 0 more deterministic
+		MaxTokens:   400, //1 token 4 chars in english, we can set it accordingly and limit the output
 		Stream:      true,
 	}
 	byt, err := json.Marshal(body)
