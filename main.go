@@ -36,7 +36,7 @@ func main() {
 	go func() {
 		resp, err := http.Get(url)
 		if err != nil {
-			panic("api not responding")
+			log.Fatal("api not responding")
 		}
 		a, e := io.ReadAll(resp.Body)
 		if e != nil {
@@ -56,7 +56,7 @@ func main() {
 	go func() {
 		resp2, err := http.Get(url2)
 		if err != nil {
-			panic("api not responding")
+			log.Fatal("api not responding")
 		}
 
 		b, e := io.ReadAll(resp2.Body)
@@ -108,7 +108,7 @@ func main() {
 		log.Println("error in making request locally to llama model")
 	}
 	if req == nil {
-		log.Println("ethu apo nil aanu")
+		log.Println("this is causing nil pointer error")
 	} else {
 		req.Header.Set("Content-Type", "application/json")
 	}
@@ -123,7 +123,7 @@ func main() {
 	}
 	c, e := io.ReadAll(resp.Body)
 	if e != nil {
-		fmt.Println("moonji")
+		log.Println("error in reading response body: ", e)
 	}
 	var fullJSON string
 	lines := strings.Split(string(c), "\n")
@@ -152,8 +152,8 @@ func main() {
 	var responses []models.ChatCompletionResponse
 	er := json.Unmarshal([]byte(fullJSON), &responses)
 	if er != nil {
-		log.Println("here only", er)
-		panic("error while unmarshalling")
+		log.Println("error:", er)
+		log.Fatal("error while unmarshalling")
 	}
 
 	Docs := []string{}
